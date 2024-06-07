@@ -1,6 +1,7 @@
 package jungle.board.service;
 
 import jungle.board.dto.PostResponseDto;
+import jungle.board.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import jungle.board.entity.Post;
 import jungle.board.repository.PostRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,30 +25,47 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<Post> getPosts() {
-        return postRepository.findAllByOrderByModifiedAtDesc();
+    public List<PostResponseDto> getPosts() {
+        List<Post> posts = postRepository.findAllByOrderByModifiedAtDesc();
+        return posts.stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public Post getPostDetail(Long id) {
+    public PostResponseDto getPostDetail(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        return post;
+        return new PostResponseDto(post);
     }
 
     @Transactional
-    public Long update(Long id, PostRequestDto requestDto) {
+    public Boolean update(Long id, PostRequestDto requestDto) {
+        if (checkPassword(id, requestDto)) {
+            Post post = postRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
+            );
+            post.update(requestDto);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public Boolean deletePost(Long id, PostRequestDto requestDto) {
+        if (checkPassword(id, requestDto)) {
+            postRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean checkPassword(Long id, PostRequestDto requestDto) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        post.update(requestDto);
-        return post.getId();
-    }
 
-    @Transactional
-    public Long deletePost(Long id) {
-        postRepository.deleteById(id);
-        return id;
+        return post.getPostPassword().equals(requestDto.getPostPassword());
     }
 }
