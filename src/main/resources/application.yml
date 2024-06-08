@@ -20,3 +20,8 @@ spring:
         database-platform: org.hibernate.dialect.MySQLDialect
         open-in-view: false
         show-sql: true
+
+jwt:
+  header : Authorization
+  secret: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+  token-validity-in-seconds: 86400
