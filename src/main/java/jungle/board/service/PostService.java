@@ -42,10 +42,8 @@ public class PostService {
 
     @Transactional
     public Boolean update(Long id, PostRequestDto requestDto) {
-        if (checkPassword(id, requestDto)) {
-            Post post = postRepository.findById(id).orElseThrow(
-                    () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
-            );
+        Post post = checkPassword(id, requestDto);
+        if (post != null) {
             post.update(requestDto);
             return true;
         }
@@ -54,18 +52,20 @@ public class PostService {
 
     @Transactional
     public Boolean deletePost(Long id, PostRequestDto requestDto) {
-        if (checkPassword(id, requestDto)) {
+        if (checkPassword(id, requestDto) != null) {
             postRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    private Boolean checkPassword(Long id, PostRequestDto requestDto) {
+    private Post checkPassword(Long id, PostRequestDto requestDto) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
 
-        return post.getPostPassword().equals(requestDto.getPostPassword());
+        if (post.getPostPassword().equals(requestDto.getPostPassword()))
+            return post;
+        return null;
     }
 }

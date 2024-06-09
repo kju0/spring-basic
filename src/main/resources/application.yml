@@ -6,17 +6,19 @@ spring:
     #    ?? PC? ????? Database??? ?? ???.
     url: jdbc:mysql://localhost:3306/board # Database?? ?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     #    mysql? ??? ??? ?? ??? ?? ???.
+    # username: root
+    # password: 56063040 # ??? mysql ????
+    #url: jdbc:mysql://43.201.20.213:3306/board #?useSSL=true&characterEncoding=UTF-8 # Database?? ?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    #    mysql? ??? ??? ?? ??? ?? ???.
     username: root
     password: 56063040 # ??? mysql ????
-  thymeleaf:
-    cache: false
-
   # spring data jpa ??
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
+        #dialect: org.hibernate.dialect.MySQLDialect
         database-platform: org.hibernate.dialect.MySQLDialect
         open-in-view: false
         show-sql: true
