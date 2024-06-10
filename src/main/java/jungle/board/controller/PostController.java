@@ -36,33 +36,46 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public List<PostResponseDto> getPosts() { //todo: responseEntity로 감싸줘야할까?
-        return postService.getPosts();
+    public ResponseEntity<ResponseDto<List<PostResponseDto>>> getPosts() {
+        try {
+            ResponseDto<List<PostResponseDto>> responseDto =  ResponseDto.ofSuccess("Post list good", postService.getPosts());
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        } catch(Exception e) {
+            ResponseDto<List<PostResponseDto>> responseDto =  ResponseDto.ofFail("Post list failed", postService.getPosts());
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/posts/{id}")
-    public PostResponseDto getPostDetail(@PathVariable Long id) {
-        return postService.getPostDetail(id);
+    public ResponseEntity<ResponseDto<PostResponseDto>> getPostDetail(@PathVariable Long id) {
+        try{
+            PostResponseDto postResponseDto = postService.getPostDetail(id);
+            ResponseDto<PostResponseDto> responseDto = ResponseDto.ofSuccess("success", postResponseDto);
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        } catch (Exception e) {
+            ResponseDto<PostResponseDto> responseDto = ResponseDto.ofFail("fail");
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/posts/{id}")
     public ResponseEntity<ResponseDto<Long>> updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
         if (postService.update(id, requestDto)){
-            ResponseDto<Long> responseDto = ResponseDto.ofSuccess("Post updated successfully", id);
+            ResponseDto<Long> responseDto = ResponseDto.ofSuccess("Post updated successfully");
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }
 
-        ResponseDto<Long> responseDto = ResponseDto.ofFail("Failed to update post", id);
+        ResponseDto<Long> responseDto = ResponseDto.ofFail("Failed to update post");
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<ResponseDto<Long>> deletePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
         if (postService.deletePost(id, requestDto)){
-            ResponseDto<Long> responseDto = ResponseDto.ofSuccess("Post deleted successfully", id);
+            ResponseDto<Long> responseDto = ResponseDto.ofSuccess("Post deleted successfully");
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }
-        ResponseDto<Long> responseDto = ResponseDto.ofSuccess("Failed to delete post", id);
+        ResponseDto<Long> responseDto = ResponseDto.ofSuccess("Failed to delete post");
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
 }
