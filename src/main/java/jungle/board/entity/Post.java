@@ -20,30 +20,25 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String author;
 
-    @Column(nullable = false)
-    private String postPassword;
 
     @Column(nullable = false)
     private String contents;
 
-    public Post(String title, String author, String postPassword, String contents) {
+    public Post(String title, String author, String contents) {
         this.title = title;
         this.author = author;
-        this.postPassword = postPassword;
         this.contents = contents;
     }
 
-    public Post(PostRequestDto requestDto) {
+    public Post(PostRequestDto requestDto, String author) {
         this.title = requestDto.getTitle();
-        this.author = requestDto.getAuthor();
-        this.postPassword = requestDto.getPostPassword();
+        this.author = author;
         this.contents = requestDto.getContents();
     }
 
+
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
-        this.author = postRequestDto.getAuthor();
-        this.postPassword = postRequestDto.getPostPassword();
         this.contents = postRequestDto.getContents();
     }
 }
