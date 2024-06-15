@@ -11,7 +11,7 @@ spring boot, mysql, JPA를 활용합니다.
 ---
 ## 설계
 ### Usecase
-https://file.notion.so/f/f/1fa8e563-7524-4d0e-862f-1b54318abbbb/ef798dbf-c284-4aa1-9795-88293089bf8d/Untitled.png?id=ca33ff72-2976-4f3d-802b-7fde87970dcc&table=block&spaceId=1fa8e563-7524-4d0e-862f-1b54318abbbb&expirationTimestamp=1718150400000&signature=Ylixl811muvQazJXYMkQaKf6kEeNdg64Ig2DAuDThDI&downloadName=Untitled.png![image](https://github.com/kju0/spring-basic/assets/158056472/911ff3c6-615f-4cb4-b9c6-70307b893f3c)
+![image](https://github.com/kju0/spring-basic/assets/158056472/88442cfb-7504-4e6a-9e3c-6ea46d76f734)
 
 ### API 명세서
 https://www.notion.so/API-1b51f9cf442b48179be4dc73ae360281
